@@ -1,7 +1,8 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import * as React from "react";
 import { aminoColors } from "@/utils/aminoColors";
 import AminoBox from "@/components/AminoBox";
+import { useItemsPerRow } from "../hooks/useItemsPerRow";
 
 interface ISequenceAlignmentProps {
   sequence1: string;
@@ -18,7 +19,8 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
   sequence2: seq2,
 }) => {
   const len = Math.min(seq1.length, seq2.length);
-  const chars = Array.from({ length: len }, (_, i) => i);
+  const itemsPerRow = useItemsPerRow(len);
+  const chunksCount = Math.ceil(len / itemsPerRow);
 
   return (
     <Box mt={4}>
@@ -26,29 +28,39 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
         Результат выравнивания
       </Typography>
 
-      <Grid container spacing={0.5} wrap="wrap">
-        {chars.map((i) => (
-          <Grid
-            key={`top-${i}`}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {/* Верхний символ */}
-            <AminoBox color={getColor(seq1[i])} char={seq1[i]} />
+      {Array.from({ length: chunksCount }).map((_, idx) => {
+        const start = idx * itemsPerRow;
+        const end = start + itemsPerRow;
+        const topChunk = seq1.slice(start, end).split("");
+        const bottomChunk = seq2.slice(start, end).split("");
 
-            {/* Нижний символ */}
-            <AminoBox
-              color={
-                isMatch(seq1[i], seq2[i]) ? "transparent" : getColor(seq2[i])
-              }
-              char={seq2[i]}
-            />
-          </Grid>
-        ))}
-      </Grid>
+        return (
+          <Box key={idx} mb={1}>
+            <Box component="pre">
+              {topChunk.map((char, i) => (
+                <AminoBox
+                  key={`t-${idx}-${i}`}
+                  color={getColor(char)}
+                  char={char}
+                />
+              ))}
+            </Box>
+            <Box component="pre">
+              {bottomChunk.map((char, i) => (
+                <AminoBox
+                  key={`b-${idx}-${i}`}
+                  color={
+                    isMatch(seq1[start + i], char)
+                      ? "transparent"
+                      : getColor(char)
+                  }
+                  char={char}
+                />
+              ))}
+            </Box>
+          </Box>
+        );
+      })}
     </Box>
   );
 };

@@ -9,6 +9,7 @@ interface IAminoBoxProps {
 const AminoBox: React.FunctionComponent<IAminoBoxProps> = ({ color, char }) => {
   return (
     <Box
+      component="span"
       px={1}
       py={0.5}
       bgcolor={color}
