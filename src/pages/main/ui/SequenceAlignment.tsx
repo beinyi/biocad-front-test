@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { aminoColors } from "@/utils/aminoColors";
 import AminoBox from "@/components/AminoBox";
@@ -32,7 +32,7 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
         Результат выравнивания
       </Typography>
 
-      <Box ref={containerRef}>
+      <Stack ref={containerRef} gap={2}>
         {Array.from({ length: chunksCount }).map((_, idx) => {
           const start = idx * itemsPerRow;
           const end = start + itemsPerRow;
@@ -40,8 +40,8 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
           const bottomChunk = seq2.slice(start, end).split("");
 
           return (
-            <Box key={idx} mb={1}>
-              <Box component="pre">
+            <Stack key={idx} gap={1}>
+              <Box>
                 {topChunk.map((char, i) => (
                   <AminoBox
                     key={`t-${idx}-${i}`}
@@ -50,7 +50,7 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
                   />
                 ))}
               </Box>
-              <Box component="pre">
+              <Box>
                 {bottomChunk.map((char, i) => (
                   <AminoBox
                     key={`b-${idx}-${i}`}
@@ -63,10 +63,10 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
                   />
                 ))}
               </Box>
-            </Box>
+            </Stack>
           );
         })}
-      </Box>
+      </Stack>
     </Box>
   );
 };
