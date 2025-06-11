@@ -10,17 +10,34 @@ const AminoBox: React.FunctionComponent<IAminoBoxProps> = ({ color, char }) => {
   return (
     <Box
       component="span"
+      display="inline-block"
       px={1}
       mx={0.2}
       py={0.5}
       bgcolor={color}
       borderRadius={1}
       textAlign="center"
-      minWidth="1.5ch"
+      minWidth="3.5ch"
     >
       {char.toLocaleUpperCase()}
     </Box>
   );
 };
 
-export default AminoBox;
+const PreBox: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  return (
+    <Box
+      sx={{
+        whiteSpace: "nowrap",
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
+const AminoBoxWithPre = Object.assign(AminoBox, {
+  Pre: PreBox,
+});
+
+export { AminoBoxWithPre as AminoBox };

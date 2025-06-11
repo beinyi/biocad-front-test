@@ -1,10 +1,10 @@
 import { Box, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import { aminoColors } from "@/utils/aminoColors";
-import AminoBox from "@/components/AminoBox";
 import { useItemsPerRow } from "../hooks/useItemsPerRow";
 import { useRef } from "react";
 import { useTextSelect } from "../hooks/useTextSelect";
+import { AminoBox } from "@/components/AminoBox";
 
 interface ISequenceAlignmentProps {
   sequence1: string;
@@ -41,7 +41,7 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
 
           return (
             <Stack key={idx} gap={1}>
-              <Box>
+              <AminoBox.Pre>
                 {topChunk.map((char, i) => (
                   <AminoBox
                     key={`t-${idx}-${i}`}
@@ -49,8 +49,8 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
                     char={char}
                   />
                 ))}
-              </Box>
-              <Box>
+              </AminoBox.Pre>
+              <AminoBox.Pre>
                 {bottomChunk.map((char, i) => (
                   <AminoBox
                     key={`b-${idx}-${i}`}
@@ -62,7 +62,7 @@ const SequenceAlignment: React.FunctionComponent<ISequenceAlignmentProps> = ({
                     char={char}
                   />
                 ))}
-              </Box>
+              </AminoBox.Pre>
             </Stack>
           );
         })}
