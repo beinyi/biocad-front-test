@@ -11,25 +11,29 @@ interface IAminoFormProps {
 const AminoForm: React.FunctionComponent<IAminoFormProps> = ({
   onSubmit: indexOnSubmit,
 }) => {
-  const { control, handleSubmit, setError, clearErrors, watch } =
-    useForm<FormValues>({
-      mode: "onSubmit",
-      defaultValues: {
-        sequence1: "",
-        sequence2: "",
-      },
-    });
+  const { control, handleSubmit, clearErrors, watch } = useForm<FormValues>({
+    mode: "onSubmit",
+    defaultValues: {
+      sequence1: "",
+      sequence2: "",
+    },
+  });
   const sequence1 = watch("sequence1");
 
   const onSubmit = (data: FormValues) => {
     clearErrors("sequence2");
-    if (data.sequence1.length !== data.sequence2.length) {
-      setError("sequence2", {
-        type: "manual",
-        message: "Последовательности должны быть одинаковой длины",
-      });
-      return;
+
+    const len1 = data.sequence1.length;
+    const len2 = data.sequence2.length;
+
+    if (len1 !== len2) {
+      if (len2 < len1) {
+        data.sequence2 = data.sequence2 + "-".repeat(len1 - len2);
+      } else {
+        data.sequence2 = data.sequence2.slice(0, len1);
+      }
     }
+
     indexOnSubmit(data);
   };
 
