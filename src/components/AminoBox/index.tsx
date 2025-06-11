@@ -11,6 +11,7 @@ const AminoBox: React.FunctionComponent<IAminoBoxProps> = ({ color, char }) => {
     <Box
       component="span"
       px={1}
+      mx={0.2}
       py={0.5}
       bgcolor={color}
       borderRadius={1}
